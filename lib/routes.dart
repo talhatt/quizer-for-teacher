@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:quizer/views/authentication/signin_screen.dart';
+import 'package:quizer/views/authentication/signup_screen.dart';
 import 'package:quizer/views/home_screen.dart';
-import 'package:quizer/views/profile.dart';
-import 'package:quizer/views/questions.dart';
-import 'package:quizer/views/reports.dart';
-import 'package:quizer/views/results.dart';
-import 'package:quizer/views/rooms.dart';
-import 'package:quizer/views/support.dart';
+import 'package:quizer/views/profile_screen.dart';
+import 'package:quizer/views/questions_screen.dart';
+import 'package:quizer/views/reports_screen.dart';
+import 'package:quizer/views/results_screen.dart';
+import 'package:quizer/views/rooms_screen.dart';
+import 'package:quizer/views/support_screen.dart';
 import 'package:quizer/views/welcome_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -17,4 +19,6 @@ final Map<String, WidgetBuilder> routes = {
   Result.routeName: (context) => Result(),
   Profile.routeName: (context) => Profile(),
   Support.routeName: (context) => Support(),
+  SignupScreen.routeName: (context) => SignupScreen(),
+  SingInScreen.routeName: (context) => SingInScreen(),
 };

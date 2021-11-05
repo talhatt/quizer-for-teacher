@@ -30,6 +30,13 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #Kullanılan paketlet listesi:
+
+  google_fonts: ^2.1.0
+  flutter_svg: ^0.23.0+1
+  google_sign_in: 4.5.1
+  http:
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -61,6 +68,7 @@ flutter:
   assets:
    - assets/images/
    - assets/logo/
+   - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

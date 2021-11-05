@@ -9,8 +9,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushNamed(context, "/signin");
       },
       child: Container(
         child: Image.asset("assets/logo/quizer.gif"),
