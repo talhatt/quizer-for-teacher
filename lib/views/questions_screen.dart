@@ -12,6 +12,8 @@ class Question extends StatefulWidget {
 class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Center(child: Text("Sorular sayfası")),
+    );
   }
 }
