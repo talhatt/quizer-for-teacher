@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
-import 'package:quizer/views/home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizer/views/home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({Key? key}) : super(key: key);
