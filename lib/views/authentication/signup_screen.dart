@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/models/user/signup/signup_error.dart';
+import 'package:quizer/models/user/signup/signup_request.dart';
+import 'package:quizer/services/firebase_service.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -12,7 +15,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreen extends State {
-  //FirebaseService service = FirebaseService();
+  FirebaseService service = FirebaseService();
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
   var email;
   var password;
@@ -149,29 +152,25 @@ class _SignupScreen extends State {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async {
-                            /*   if (password == password2) {
+                            if (password == password2) {
                               var result = await service.singupUser(
                                   SignupRequest(
                                       email: this.email,
                                       password: this.password,
                                       returnSecureToken: true));
                               if (result is SignupError) {
-                                scaffold.currentState.showSnackBar(SnackBar(
-                                  content: Text(result.error.message),
+                                scaffold.currentState!.showSnackBar(SnackBar(
+                                  content:
+                                      Text(result.error!.message ?? 'Error'),
                                 ));
                               } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomeScreen(),
-                                    ));
+                                Navigator.pushNamed(context, "/home");
                               }
                             } else {
-                              scaffold.currentState.showSnackBar(SnackBar(
+                              scaffold.currentState!.showSnackBar(SnackBar(
                                 content: Text("Şifreler uyuşmuyor!"),
                               ));
                             }
-                            */
                           },
                           child: Container(
                             padding: EdgeInsets.all(16.0),

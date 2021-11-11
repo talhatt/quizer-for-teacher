@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/models/user/signin/signin_error.dart';
+import 'package:quizer/models/user/signin/signin_request.dart';
+import 'package:quizer/services/firebase_service.dart';
 import 'package:quizer/views/authentication/signup_screen.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -11,6 +14,7 @@ class SingInScreen extends StatefulWidget {
 class _SingInScreenState extends State<SingInScreen> {
   var email;
   var password;
+  FirebaseService service = FirebaseService();
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
 
   @override
@@ -121,24 +125,18 @@ class _SingInScreenState extends State<SingInScreen> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async {
-                            Navigator.pushNamed(context, "/home");
-                            // var result = await service.postUser(SigninRequest(
-                            //   email: this.email,
-                            // password: this.password,
-                            // returnSecureToken: true));
+                            var result = await service.postUser(SigninRequest(
+                                email: this.email,
+                                password: this.password,
+                                returnSecureToken: true));
 
-                            /*if (result is SigninError) {
-                              scaffold.currentState.showSnackBar(SnackBar(
-                                content: Text(result.error.message),
+                            if (result is SigninError) {
+                              scaffold.currentState!.showSnackBar(SnackBar(
+                                content: Text(result.error!.message ?? 'Error'),
                               ));
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(),
-                                  ));
+                              Navigator.pushNamed(context, "/home");
                             }
-                            */
                           },
                           child: Container(
                             padding: EdgeInsets.all(16),
