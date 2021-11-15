@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ElevatedButton(
         child: Text("Sınav Başlat"),
         style: ElevatedButton.styleFrom(
-          primary: secondaryColor,
+          primary: Colors.deepOrange,
         ),
         onPressed: () {},
       ),
