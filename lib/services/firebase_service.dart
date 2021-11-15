@@ -11,8 +11,6 @@ class FirebaseService {
       "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDBLcJGlT_bKsNJ0RgFxyl2UbE3D_rz-eU";
   static const String FIREBASE_SIGNUP_URL =
       "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDBLcJGlT_bKsNJ0RgFxyl2UbE3D_rz-eU";
-  static const String FIREBASE_URL =
-      "https://ezberci-43285.firebaseio.com/texts.jsontexts.json";
 
   Future postUser(SigninRequest request) async {
     var jsonModel = json.encode(request.toJson());
@@ -43,16 +41,4 @@ class FirebaseService {
         return error;
     }
   }
-
-  //Future<List<UserText>> getTexts() async {
-  //final response = await http.get(FIREBASE_URL);
-
-  //switch (response.statusCode) {
-  //case HttpStatus.ok:
-  //final jsonModel = json.decode(response.body);
-  //return
-  //default:
-  //return Future.error(response.statusCode);
-  //}
 }
-//}
