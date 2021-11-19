@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/components/menu.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/views/authentication/signin_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -12,12 +14,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  logOut() {
+    FirebaseAuth.instance.signOut().then((value) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => SignInScreen()),
+          (Route<dynamic> route) => false);
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(appName),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+              onPressed: () {
+                logOut();
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: SafeArea(
           child: Column(

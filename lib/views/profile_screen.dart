@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/views/authentication/signin_screen.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -8,6 +10,15 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logOut() {
+      FirebaseAuth.instance.signOut().then((value) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => SignInScreen()),
+            (Route<dynamic> route) => false);
+      });
+    }
+
     return DefaultTabController(
       initialIndex: 1,
       length: 3,
@@ -15,6 +26,13 @@ class Profile extends StatelessWidget {
         appBar: AppBar(
           title: Text(appName),
           centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  logOut();
+                },
+                icon: Icon(Icons.logout))
+          ],
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(

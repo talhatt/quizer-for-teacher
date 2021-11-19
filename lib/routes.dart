@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizer/components/edit_screen.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
 import 'package:quizer/views/authentication/signup_screen.dart';
 import 'package:quizer/views/home_screen.dart';
@@ -20,5 +21,5 @@ final Map<String, WidgetBuilder> routes = {
   Profile.routeName: (context) => Profile(),
   Support.routeName: (context) => Support(),
   SignupScreen.routeName: (context) => SignupScreen(),
-  SingInScreen.routeName: (context) => SingInScreen(),
+  SignInScreen.routeName: (context) => SignInScreen(),
 };

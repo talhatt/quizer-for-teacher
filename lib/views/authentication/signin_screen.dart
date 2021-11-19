@@ -1,21 +1,52 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/helper/functions.dart';
 import 'package:quizer/models/user/signin/signin_error.dart';
 import 'package:quizer/models/user/signin/signin_request.dart';
 import 'package:quizer/services/firebase_service.dart';
 import 'package:quizer/views/authentication/signup_screen.dart';
 
-class SingInScreen extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   @override
-  _SingInScreenState createState() => _SingInScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
   static String routeName = "/signin";
 }
 
-class _SingInScreenState extends State<SingInScreen> {
-  var email;
-  var password;
-  FirebaseService service = FirebaseService();
+class _SignInScreenState extends State<SignInScreen> {
+  //var email;
+  //var password;
+  //FirebaseService service = FirebaseService();
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
+
+  //FirebaseAuth paketi ile giriş
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  //Login methodu
+  login() async {
+    try {
+      final User? user =
+          (await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      ))
+              .user;
+      if (user != null) {
+        HelperFunctions.saveUserLoggedInDetails(isLoggedIn: true);
+        Navigator.pushNamed(context, "/home");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        scaffold.currentState!.showSnackBar(SnackBar(
+            content: Text(
+                'Bu e-mail adresi ile kayıtlı kullanıcı bulunmamaktadır!')));
+      } else if (e.code == 'wrong-password') {
+        scaffold.currentState!
+            .showSnackBar(SnackBar(content: Text('Şifre yanlış!')));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +110,14 @@ class _SingInScreenState extends State<SingInScreen> {
                         ),
                         Expanded(
                           child: TextField(
+                            controller: email,
+                            /*
                             onChanged: (value) {
                               setState(() {
                                 email = value;
                               });
                             },
+                            */
                             decoration: InputDecoration(
                               hintText: "E-mail",
                             ),
@@ -105,11 +139,14 @@ class _SingInScreenState extends State<SingInScreen> {
                       Expanded(
                         child: TextField(
                           obscureText: true,
+                          controller: password,
+                          /*
                           onChanged: (value) {
                             setState(() {
                               password = value;
                             });
                           },
+                          */
                           decoration: InputDecoration(
                             hintText: "Şifre",
                           ),
@@ -124,6 +161,7 @@ class _SingInScreenState extends State<SingInScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         GestureDetector(
+                          /*
                           onTap: () async {
                             var result = await service.postUser(SigninRequest(
                                 email: this.email,
@@ -137,6 +175,10 @@ class _SingInScreenState extends State<SingInScreen> {
                             } else {
                               Navigator.pushNamed(context, "/home");
                             }
+                          },
+                          */
+                          onTap: () {
+                            login();
                           },
                           child: Container(
                             padding: EdgeInsets.all(16),

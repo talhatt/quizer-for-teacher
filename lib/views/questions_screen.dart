@@ -61,7 +61,10 @@ class _QuestionState extends State<Question> {
             ],
           ),
           CustomHeader(title: "Sorularım"),
-          CustomListView()
+          CustomListView(
+            collectionName: 'questions',
+            name: "Soru",
+          )
         ],
       ),
     );

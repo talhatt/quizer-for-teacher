@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/helper/functions.dart';
 import 'package:quizer/models/user/signup/signup_error.dart';
 import 'package:quizer/models/user/signup/signup_request.dart';
 import 'package:quizer/services/firebase_service.dart';
@@ -15,11 +17,46 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreen extends State {
-  FirebaseService service = FirebaseService();
+  //FirebaseService service = FirebaseService();
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
-  var email;
-  var password;
-  var password2;
+  //var email;
+  //var password;
+  //var password2;
+
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController password2 = TextEditingController();
+
+  signUp() async {
+    if (password.text == password2.text) {
+      try {
+        final User? user =
+            (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        ))
+                .user;
+        if (user != null) {
+          HelperFunctions.saveUserLoggedInDetails(isLoggedIn: true);
+          Navigator.pushNamed(context, "/home");
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          scaffold.currentState!.showSnackBar(
+              SnackBar(content: Text("Lütfen daha güçlü bir şifre seçiniz!")));
+        } else if (e.code == 'email-already-in-use') {
+          scaffold.currentState!.showSnackBar(
+              SnackBar(content: Text("Bu e-mail adresi kullanılmaktadır.")));
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      scaffold.currentState!
+          .showSnackBar(SnackBar(content: Text("Şifreler uyuşmuyor!")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +90,7 @@ class _SignupScreen extends State {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SingInScreen(),
+                                builder: (context) => SignInScreen(),
                               ));
                         },
                         child: Text(
@@ -83,11 +120,12 @@ class _SignupScreen extends State {
                       ),
                       Expanded(
                         child: TextField(
-                          onChanged: (value) {
-                            setState(() {
-                              email = value;
-                            });
-                          },
+                          controller: email,
+                          //onChanged: (value) {
+                          //setState(() {
+                          //email = value;
+                          //});
+                          //},
                           decoration: InputDecoration(
                             hintText: "E-mail",
                           ),
@@ -111,11 +149,12 @@ class _SignupScreen extends State {
                       Expanded(
                         child: TextField(
                           obscureText: true,
-                          onChanged: (value) {
-                            setState(() {
-                              password = value;
-                            });
-                          },
+                          controller: password,
+                          //onChanged: (value) {
+                          //setState(() {
+                          //password = value;
+                          //});
+                          //},
                           decoration: InputDecoration(hintText: "Şifre"),
                         ),
                       ),
@@ -134,11 +173,12 @@ class _SignupScreen extends State {
                       Expanded(
                         child: TextField(
                           obscureText: true,
-                          onChanged: (value) {
-                            setState(() {
-                              password2 = value;
-                            });
-                          },
+                          controller: password2,
+                          //onChanged: (value) {
+                          //setState(() {
+                          //password2 = value;
+                          //});
+                          //},
                           decoration: InputDecoration(hintText: "Şifre"),
                         ),
                       ),
@@ -151,27 +191,30 @@ class _SignupScreen extends State {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         GestureDetector(
-                          onTap: () async {
-                            if (password == password2) {
-                              var result = await service.singupUser(
-                                  SignupRequest(
-                                      email: this.email,
-                                      password: this.password,
-                                      returnSecureToken: true));
-                              if (result is SignupError) {
-                                scaffold.currentState!.showSnackBar(SnackBar(
-                                  content:
-                                      Text(result.error!.message ?? 'Error'),
-                                ));
-                              } else {
-                                Navigator.pushNamed(context, "/home");
-                              }
-                            } else {
-                              scaffold.currentState!.showSnackBar(SnackBar(
-                                content: Text("Şifreler uyuşmuyor!"),
-                              ));
-                            }
+                          onTap: () {
+                            signUp();
                           },
+                          //onTap: () async {
+                          //if (password == password2) {
+                          //var result = await service.singupUser(
+                          //SignupRequest(
+                          //email: this.email,
+                          //password: this.password,
+                          //returnSecureToken: true));
+                          //if (result is SignupError) {
+                          //scaffold.currentState!.showSnackBar(SnackBar(
+                          //content:
+                          //Text(result.error!.message ?? 'Error'),
+                          //));
+                          //} else {
+                          //Navigator.pushNamed(context, "/home");
+                          //}
+                          //} else {
+                          //scaffold.currentState!.showSnackBar(SnackBar(
+                          //content: Text("Şifreler uyuşmuyor!"),
+                          //));
+                          //}
+                          //},
                           child: Container(
                             padding: EdgeInsets.all(16.0),
                             decoration: BoxDecoration(
