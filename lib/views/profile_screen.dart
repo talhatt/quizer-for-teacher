@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/helper/functions.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
 
 class Profile extends StatelessWidget {
@@ -11,6 +12,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logOut() {
+      HelperFunctions.saveUserLoggedInDetails(isLoggedIn: false);
       FirebaseAuth.instance.signOut().then((value) {
         Navigator.pushAndRemoveUntil(
             context,

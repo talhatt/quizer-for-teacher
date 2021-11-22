@@ -5,6 +5,7 @@ import 'package:quizer/constants.dart';
 import 'package:quizer/helper/functions.dart';
 import 'package:quizer/routes.dart';
 import 'package:quizer/views/home_screen.dart';
+import 'package:quizer/views/profile_screen.dart';
 import 'package:quizer/views/welcome_screen.dart';
 
 Future<void> main() async {
@@ -23,8 +24,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    checkUserLoggedInStatus();
     super.initState();
+    checkUserLoggedInStatus();
   }
 
   checkUserLoggedInStatus() async {
@@ -46,9 +47,10 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       title: 'Quizer',
-      initialRoute: (_isLoggedIn ?? false)
-          ? HomeScreen.routeName
-          : WelcomeScreen.routeName,
+      home: (_isLoggedIn ?? false) ? HomeScreen() : WelcomeScreen(),
+      //initialRoute: (_isLoggedIn ?? false)
+      //? HomeScreen.routeName
+      //: WelcomeScreen.routeName,
       routes: routes,
     );
   }

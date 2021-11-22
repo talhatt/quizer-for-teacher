@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
+import 'package:quizer/helper/functions.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     logOut() {
       FirebaseAuth.instance.signOut().then((value) {
+        HelperFunctions.saveUserLoggedInDetails(isLoggedIn: false);
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => SignInScreen()),
