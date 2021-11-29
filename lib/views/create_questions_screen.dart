@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/components/custom_header.dart';
 import 'package:quizer/components/multiple_choice_screen.dart';
+import 'package:quizer/components/true_false_screen.dart';
 import 'package:quizer/constants.dart';
 import 'package:quizer/models/questions/question.dart';
 
@@ -25,35 +26,45 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
       "name": questionName.text,
       "userId": FirebaseAuth.instance.currentUser!.uid,
     });
-    //firebase
-    //.collection("questions")
-    //.doc(questionName.text)
-    //.collection("question")
-    //.doc()
-    //.set({
-    //"question": questions[0].question,
-    //"questionType": questions[0].questionType,
-    //"correctAnswer": questions[0].correctAnswer,
-    //"option1": questions[0].option1,
-    //"option2": questions[0].option2,
-    //"option3": questions[0].option3,
-    //"option4": questions[0].option4,
-    //}).then((value) => print("Soru eklendi"));
     for (var data in questions) {
-      firebase
-          .collection("questions")
-          .doc(questionName.text)
-          .collection("question")
-          .doc("Soru-" + (questions.indexOf(data) + 1).toString())
-          .set({
-        "question": data.question,
-        "questionType": data.questionType,
-        "correctAnswer": data.correctAnswer,
-        "option1": data.option1,
-        "option2": data.option2,
-        "option3": data.option3,
-        "option4": data.option4,
-      }).then((value) => print("Soru eklendi"));
+      if (data.questionType == "multipleChoice") {
+        firebase
+            .collection("questions")
+            .doc(questionName.text)
+            .collection("question")
+            .doc("Soru-" + (questions.indexOf(data) + 1).toString())
+            .set({
+          "question": data.question,
+          "questionType": data.questionType,
+          "correctAnswer": data.correctAnswer,
+          "option1": data.option1,
+          "option2": data.option2,
+          "option3": data.option3,
+          "option4": data.option4,
+        }).then((value) => print("Soru eklendi"));
+      } else if (data.questionType == "trueFalse") {
+        firebase
+            .collection("questions")
+            .doc(questionName.text)
+            .collection("question")
+            .doc("Soru-" + (questions.indexOf(data) + 1).toString())
+            .set({
+          "question": data.question,
+          "questionType": data.questionType,
+          "correctAnswer": data.correctAnswer,
+        }).then((value) => print("Soru eklendi"));
+      } else if (data.questionType == "gapFilling") {
+        firebase
+            .collection("questions")
+            .doc(questionName.text)
+            .collection("question")
+            .doc("Soru-" + (questions.indexOf(data) + 1).toString())
+            .set({
+          "question": data.question,
+          "questionType": data.questionType,
+          "correctAnswer": data.correctAnswer,
+        }).then((value) => print("Soru eklendi"));
+      }
     }
   }
 
@@ -113,7 +124,7 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
                   return Column(
                     children: [
                       Text("Soru - " + (index + 1).toString()),
-                      MultipleChoiceScreen(question: questions[index]),
+                      TrueFalseScreen(question: questions[index]),
                     ],
                   );
                 }

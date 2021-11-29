@@ -2,18 +2,18 @@ class Question {
   late String question;
   late String questionType;
   late String correctAnswer;
-  late String option1;
-  late String option2;
-  late String option3;
-  late String option4;
+  String? option1;
+  String? option2;
+  String? option3;
+  String? option4;
 
   Question.multiple() {
-    this.questionType = "multipleChoice";
+    questionType = "multipleChoice";
   }
   Question.gapFilling() {
-    this.questionType = "gapFilling";
+    questionType = "gapFilling";
   }
   Question.trueFalse() {
-    this.questionType = "trueFalse";
+    questionType = "trueFalse";
   }
 }
