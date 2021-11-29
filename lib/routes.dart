@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizer/components/edit_screen.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
 import 'package:quizer/views/authentication/signup_screen.dart';
+import 'package:quizer/views/create_questions_screen.dart';
 import 'package:quizer/views/home_screen.dart';
 import 'package:quizer/views/profile_screen.dart';
 import 'package:quizer/views/questions_screen.dart';
@@ -22,4 +23,5 @@ final Map<String, WidgetBuilder> routes = {
   Support.routeName: (context) => Support(),
   SignupScreen.routeName: (context) => SignupScreen(),
   SignInScreen.routeName: (context) => SignInScreen(),
+  CreateQuestionsScreen.routeName: (context) => CreateQuestionsScreen(),
 };
