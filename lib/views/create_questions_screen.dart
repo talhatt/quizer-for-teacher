@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/components/custom_header.dart';
+import 'package:quizer/components/gap_filling_screen.dart';
 import 'package:quizer/components/multiple_choice_screen.dart';
 import 'package:quizer/components/true_false_screen.dart';
 import 'package:quizer/constants.dart';
@@ -117,7 +118,7 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
                   return Column(
                     children: [
                       Text("Soru - " + (index + 1).toString()),
-                      MultipleChoiceScreen(question: questions[index]),
+                      GapFillingScreen(question: questions[index]),
                     ],
                   );
                 } else {
