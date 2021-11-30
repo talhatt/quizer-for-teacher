@@ -9,14 +9,21 @@ class Support extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Destek için lütfen aşağıdaki adrese mail atınız"),
-            Text("talhaturgut@windowslive.com"),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LinearProgressIndicator(color: Colors.red),
+          Text("Destek için lütfen aşağıdaki adrese mail atınız"),
+          LinearProgressIndicator(),
+          SizedBox(
+            height: 50,
+          ),
+          LinearProgressIndicator(
+            color: Colors.red,
+          ),
+          Text("talhaturgut@windowslive.com"),
+          LinearProgressIndicator(),
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/constants.dart';
 import 'package:quizer/helper/functions.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
@@ -11,6 +11,29 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController userName = TextEditingController();
+    TextEditingController userSurname = TextEditingController();
+    TextEditingController userEmail = TextEditingController();
+    TextEditingController userPhoneNumber = TextEditingController();
+    TextEditingController userSchool = TextEditingController();
+    TextEditingController userRole = TextEditingController();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    //Kullanıcı bilgilerini getir
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .get()
+        .then((value) {
+      userName.text = value.data()!['userName'];
+      userSurname.text = value.data()!['userSurname'];
+      userEmail.text = value.data()!['userEmail'];
+      userPhoneNumber.text = value.data()!['userPhoneNumber'];
+      userSchool.text = value.data()!['userSchool'];
+      userRole.text = value.data()!['userRole'];
+    });
+
+    //Cıkış yap
     logOut() {
       HelperFunctions.saveUserLoggedInDetails(isLoggedIn: false);
       FirebaseAuth.instance.signOut().then((value) {
@@ -18,6 +41,19 @@ class Profile extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (_) => SignInScreen()),
             (Route<dynamic> route) => false);
+      });
+    }
+
+    //Kullanıcı bilgilerini güncelle
+    save() {
+      FirebaseFirestore.instance.collection("users").doc(userId).set({
+        "userName": userName.text,
+        "userSurname": userSurname.text,
+        "userEmail": userEmail.text,
+        "userPhoneNumber": userPhoneNumber.text,
+        "userSchool": userSchool.text,
+        "userRole": userRole.text,
+        "userId": userId,
       });
     }
 
@@ -51,8 +87,9 @@ class Profile extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            buildProfileTab(),
-            buildInformationsTab(),
+            buildProfileTab(
+                userName, userSurname, userEmail, userPhoneNumber, save),
+            buildInformationsTab(userSchool, userRole, save),
             buildAccountTab(),
           ],
         ),
@@ -60,10 +97,24 @@ class Profile extends StatelessWidget {
     );
   }
 
-  ListView buildProfileTab() {
+  IconButton test(Null logOut()) {
+    return IconButton(
+        onPressed: () {
+          logOut();
+        },
+        icon: Icon(Icons.arrow_back));
+  }
+
+  ListView buildProfileTab(
+      TextEditingController userName,
+      TextEditingController userSurname,
+      TextEditingController userEmail,
+      TextEditingController userPhoneNumber,
+      Null save()) {
     return ListView(padding: EdgeInsets.all(10), children: [
       SizedBox(height: 5),
       TextField(
+        controller: userName,
         decoration: InputDecoration(
           labelText: "Ad",
           border: OutlineInputBorder(
@@ -73,6 +124,7 @@ class Profile extends StatelessWidget {
       ),
       SizedBox(height: 20),
       TextField(
+        controller: userSurname,
         decoration: InputDecoration(
           labelText: "Soyad",
           border: OutlineInputBorder(
@@ -82,6 +134,7 @@ class Profile extends StatelessWidget {
       ),
       SizedBox(height: 20),
       TextField(
+        controller: userEmail,
         decoration: InputDecoration(
           labelText: "E-mail",
           border: OutlineInputBorder(
@@ -91,6 +144,7 @@ class Profile extends StatelessWidget {
       ),
       SizedBox(height: 20),
       TextField(
+        controller: userPhoneNumber,
         decoration: InputDecoration(
           labelText: "Telefon(isteğe bağlı)",
           border: OutlineInputBorder(
@@ -99,14 +153,20 @@ class Profile extends StatelessWidget {
         ),
       ),
       SizedBox(height: 20),
-      ElevatedButton(onPressed: () {}, child: Text("Kaydet")),
+      ElevatedButton(
+          onPressed: () {
+            save();
+          },
+          child: Text("Kaydet")),
     ]);
   }
 
-  ListView buildInformationsTab() {
+  ListView buildInformationsTab(TextEditingController userSchool,
+      TextEditingController userRole, Null save()) {
     return ListView(padding: EdgeInsets.all(10), children: [
       SizedBox(height: 5),
       TextField(
+        controller: userSchool,
         decoration: InputDecoration(
           labelText: "Okul",
           border: OutlineInputBorder(
@@ -116,6 +176,7 @@ class Profile extends StatelessWidget {
       ),
       SizedBox(height: 20),
       TextField(
+        controller: userRole,
         decoration: InputDecoration(
           labelText: "Rol",
           border: OutlineInputBorder(
@@ -124,7 +185,11 @@ class Profile extends StatelessWidget {
         ),
       ),
       SizedBox(height: 20),
-      ElevatedButton(onPressed: () {}, child: Text("Kaydet")),
+      ElevatedButton(
+          onPressed: () {
+            save();
+          },
+          child: Text("Kaydet")),
     ]);
   }
 
