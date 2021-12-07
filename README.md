@@ -1,6 +1,6 @@
 # quizer
 
-A new Flutter project.
+Quizer, sorular hazırlayabileceğiniz, anket yapabileceğiniz, sınıf ortamında veya internet üzerinden istediğiniz zamanda online sınav oluşturabileceğiniz ve sonuçları anlık olarak görüntüleyip analiz ederek paylaşabileceğiniz bir mobil uygulamadır.
 
 ## Getting Started
 
