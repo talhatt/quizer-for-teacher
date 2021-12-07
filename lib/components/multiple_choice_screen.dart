@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/constants.dart';
 import 'package:quizer/models/questions/question.dart';
+import 'package:quizer/views/create_questions_screen.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
-  const MultipleChoiceScreen({Key? key, required this.question})
-      : super(key: key);
-  final Question question;
+  MultipleChoiceScreen({Key? key, required this.question}) : super(key: key);
+  Question question;
 
   @override
   State<MultipleChoiceScreen> createState() => _MultipleChoiceScreenState();
@@ -19,6 +19,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   String? option2;
   String? option3;
   String? option4;
+  bool isSaved = false;
   @override
   Widget build(BuildContext context) {
     saveQuestion() {
@@ -36,6 +37,10 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
       print(widget.question.option4);
     }
 
+    deleteQuestion() {
+      widget.question.questionType = "null";
+    }
+
     return Column(
       children: [
         Row(
@@ -51,7 +56,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                   },
                   //controller: controller,
                   decoration: InputDecoration(
-                    hintText: "Sorunuzu yazın",
+                    hintText: "Bir soru yazın",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -60,13 +65,19 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
               ),
             ),
             IconButton(
-                onPressed: () {
-                  saveQuestion();
-                },
-                icon: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                ))
+              onPressed: () {
+                isSaved ? deleteQuestion() : saveQuestion();
+                setState(() {
+                  isSaved = !isSaved;
+                });
+              },
+              icon: isSaved
+                  ? Icon(Icons.close, color: Colors.red)
+                  : Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+            ),
           ],
         ),
         Container(

@@ -22,11 +22,25 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
   List<Question> questions = [];
   TextEditingController questionName = TextEditingController();
   FirebaseFirestore firebase = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    questions.removeWhere((question) => question.questionType == "null");
+  }
+
+  deleteQuestion(int index) {
+    setState(() {
+      questions.remove(questions[index]);
+    });
+  }
+
   saveQuestions() {
     firebase.collection("questions").doc(questionName.text).set({
       "name": questionName.text,
       "userId": FirebaseAuth.instance.currentUser!.uid,
     });
+
     for (var data in questions) {
       if (data.questionType == "multipleChoice") {
         firebase
@@ -101,6 +115,18 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
                 },
               ),
             ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                child: Text("Sil soru 1"),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.deepOrange,
+                ),
+                onPressed: () {
+                  deleteQuestion(0);
+                },
+              ),
+            ),
             buildDivider(),
             ListView.builder(
               physics: ScrollPhysics(),
@@ -108,6 +134,7 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
               itemCount: questions.length,
               itemBuilder: (BuildContext context, int index) {
                 if (questions[index].questionType == "multipleChoice") {
+                  print(questions[index].questionType);
                   return Column(
                     children: [
                       Text("Soru - " + (index + 1).toString()),
@@ -115,19 +142,24 @@ class _CreateQuestionsScreenState extends State<CreateQuestionsScreen> {
                     ],
                   );
                 } else if (questions[index].questionType == "gapFilling") {
+                  print(questions[index].questionType);
                   return Column(
                     children: [
                       Text("Soru - " + (index + 1).toString()),
                       GapFillingScreen(question: questions[index]),
                     ],
                   );
-                } else {
+                } else if (questions[index].questionType == "trueFalse") {
+                  print(questions[index].questionType);
                   return Column(
                     children: [
                       Text("Soru - " + (index + 1).toString()),
                       TrueFalseScreen(question: questions[index]),
                     ],
                   );
+                } else {
+                  print(questions[index].questionType);
+                  return Container();
                 }
               },
             ),

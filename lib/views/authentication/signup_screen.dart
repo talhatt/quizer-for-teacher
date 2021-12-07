@@ -6,6 +6,7 @@ import 'package:quizer/models/user/signup/signup_error.dart';
 import 'package:quizer/models/user/signup/signup_request.dart';
 import 'package:quizer/services/firebase_service.dart';
 import 'package:quizer/views/authentication/signin_screen.dart';
+import 'package:quizer/views/welcome_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -66,12 +67,20 @@ class _SignupScreen extends State {
         children: <Widget>[
           Expanded(
             flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/logo/quizer.gif"),
-                  fit: BoxFit.contain,
-                  alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => WelcomeScreen()),
+                    (Route<dynamic> route) => false);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/logo/quizer.gif"),
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomCenter,
+                  ),
                 ),
               ),
             ),

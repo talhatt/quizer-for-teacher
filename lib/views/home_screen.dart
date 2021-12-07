@@ -59,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
         style: ElevatedButton.styleFrom(
           primary: Colors.deepOrange,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, "/rooms");
+        },
       ),
     );
   }

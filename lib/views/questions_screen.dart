@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:quizer/components/custom_app_bar.dart';
 import 'package:quizer/components/custom_header.dart';
 import 'package:quizer/components/custom_list_view.dart';
-import 'package:quizer/components/menu.dart';
-import 'package:quizer/constants.dart';
-import 'package:quizer/views/create_questions_screen.dart';
 
 class Question extends StatefulWidget {
   static String routeName = "/questions";
+  late String? docId;
 
-  Question({Key? key}) : super(key: key);
+  Question({Key? key, this.docId}) : super(key: key);
 
   @override
   _QuestionState createState() => _QuestionState();
@@ -27,10 +25,13 @@ class _QuestionState extends State<Question> {
             buildButton(context),
           ]),
           CustomHeader(title: "Sorularım"),
-          CustomListView(
-            collectionName: 'questions',
-            name: "Soru",
-          )
+          (widget.docId == null)
+              ? CustomListView(collectionName: 'questions', name: "Soru")
+              : CustomListView(
+                  collectionName: 'questions',
+                  name: "Soru",
+                  docId: widget.docId,
+                ),
         ],
       ),
     );

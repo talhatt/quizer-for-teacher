@@ -6,6 +6,7 @@ import 'package:quizer/models/user/signin/signin_error.dart';
 import 'package:quizer/models/user/signin/signin_request.dart';
 import 'package:quizer/services/firebase_service.dart';
 import 'package:quizer/views/authentication/signup_screen.dart';
+import 'package:quizer/views/welcome_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -57,12 +58,20 @@ class _SignInScreenState extends State<SignInScreen> {
         children: <Widget>[
           Expanded(
             flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/logo/quizer.gif"),
-                  fit: BoxFit.contain,
-                  alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => WelcomeScreen()),
+                    (Route<dynamic> route) => false);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/logo/quizer.gif"),
+                    fit: BoxFit.contain,
+                    alignment: Alignment.bottomCenter,
+                  ),
                 ),
               ),
             ),
@@ -112,12 +121,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: TextField(
                             controller: email,
                             /*
-                            onChanged: (value) {
-                              setState(() {
-                                email = value;
-                              });
-                            },
-                            */
+                          onChanged: (value) {
+                            setState(() {
+                              email = value;
+                            });
+                          },
+                          */
                             decoration: InputDecoration(
                               hintText: "E-mail",
                             ),
@@ -141,12 +150,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           obscureText: true,
                           controller: password,
                           /*
-                          onChanged: (value) {
-                            setState(() {
-                              password = value;
-                            });
-                          },
-                          */
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                        */
                           decoration: InputDecoration(
                             hintText: "Şifre",
                           ),
@@ -162,21 +171,21 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: <Widget>[
                         GestureDetector(
                           /*
-                          onTap: () async {
-                            var result = await service.postUser(SigninRequest(
-                                email: this.email,
-                                password: this.password,
-                                returnSecureToken: true));
-
-                            if (result is SigninError) {
-                              scaffold.currentState!.showSnackBar(SnackBar(
-                                content: Text(result.error!.message ?? 'Error'),
-                              ));
-                            } else {
-                              Navigator.pushNamed(context, "/home");
-                            }
-                          },
-                          */
+                        onTap: () async {
+                          var result = await service.postUser(SigninRequest(
+                              email: this.email,
+                              password: this.password,
+                              returnSecureToken: true));
+        
+                          if (result is SigninError) {
+                            scaffold.currentState!.showSnackBar(SnackBar(
+                              content: Text(result.error!.message ?? 'Error'),
+                            ));
+                          } else {
+                            Navigator.pushNamed(context, "/home");
+                          }
+                        },
+                        */
                           onTap: () {
                             login();
                           },

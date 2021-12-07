@@ -2,15 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizer/components/edit_screen.dart';
+import 'package:quizer/constants.dart';
+import 'package:quizer/views/exam_management_screen.dart';
+import 'package:quizer/views/questions_screen.dart';
+import 'package:quizer/views/rooms_screen.dart';
 
 class CustomListView extends StatelessWidget {
-  const CustomListView({
-    Key? key,
-    required this.collectionName,
-    required this.name,
-  }) : super(key: key);
+  CustomListView(
+      {Key? key, required this.collectionName, required this.name, this.docId})
+      : super(key: key);
   final String collectionName;
   final String name;
+  late String? docId;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,12 @@ class CustomListView extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () {
-                              delete(document);
+                              showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    showAlertDialog(context, document),
+                              );
+                              ;
                             },
                             icon: Icon(Icons.delete)),
                         IconButton(
@@ -66,7 +74,63 @@ class CustomListView extends StatelessWidget {
                             },
                             icon: Icon(Icons.edit)),
                         IconButton(
-                            onPressed: () {}, icon: Icon(Icons.play_circle)),
+                            onPressed: () async {
+                              String fieldName = (collectionName == "rooms")
+                                  ? "roomName"
+                                  : "questionName";
+
+                              DocumentReference examManagement;
+
+                              if (docId == null) {
+                                examManagement = FirebaseFirestore.instance
+                                    .collection("examManagement")
+                                    .doc();
+                              } else {
+                                examManagement = FirebaseFirestore.instance
+                                    .collection("examManagement")
+                                    .doc(docId);
+                              }
+                              print("docId : $docId");
+                              print("examManagement.id : ${examManagement.id}");
+
+                              examManagement.set({'$fieldName': data['name']},
+                                  SetOptions(merge: true));
+
+                              print(examManagement.id);
+
+                              var docSnapshot = await FirebaseFirestore.instance
+                                  .collection('examManagement')
+                                  .doc(examManagement.id)
+                                  .get();
+
+                              if (docSnapshot.exists) {
+                                Map<String, dynamic>? data = docSnapshot.data();
+                                if (data?['roomName'] != null &&
+                                    data?['questionName'] != null) {
+                                  // go to ExamManagement screen with docId
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ExamManagementScreen(
+                                                  docId: examManagement.id)));
+                                } else {
+                                  fieldName == "roomName"
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Question(
+                                                    docId: examManagement.id,
+                                                  )))
+                                      : Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Room(
+                                                  docId: examManagement.id)));
+                                }
+                              }
+                            },
+                            icon: Icon(Icons.play_circle)),
                       ],
                     ),
                   ),
@@ -76,6 +140,29 @@ class CustomListView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  AlertDialog showAlertDialog(
+      BuildContext context, DocumentSnapshot<Object?> document) {
+    return AlertDialog(
+      elevation: 24,
+      backgroundColor: secondaryColor,
+      actionsAlignment: MainAxisAlignment.spaceAround,
+      content: Text("Silmek istediğinize emin misiniz?"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Hayır")),
+        TextButton(
+            onPressed: () {
+              delete(document);
+              Navigator.pop(context);
+            },
+            child: Text("Evet")),
+      ],
     );
   }
 

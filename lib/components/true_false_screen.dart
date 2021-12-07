@@ -39,7 +39,7 @@ class _TrueFalseScreenState extends State<TrueFalseScreen> {
                   },
                   //controller: controller,
                   decoration: InputDecoration(
-                    hintText: "Sorunuzu yazın",
+                    hintText: "Bir soru yazın",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

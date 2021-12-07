@@ -6,8 +6,9 @@ import 'package:quizer/components/custom_header.dart';
 import 'package:quizer/components/custom_list_view.dart';
 
 class Room extends StatefulWidget {
-  Room({Key? key}) : super(key: key);
+  Room({Key? key, this.docId}) : super(key: key);
   static String routeName = "/rooms";
+  late String? docId;
 
   @override
   _RoomState createState() => _RoomState();
@@ -46,7 +47,13 @@ class _RoomState extends State<Room> {
             ),
             saveButton(createRoom, clearText),
             CustomHeader(title: "Odalarım"),
-            CustomListView(collectionName: 'rooms', name: "Oda"),
+            (widget.docId == null)
+                ? CustomListView(collectionName: 'rooms', name: "Oda")
+                : CustomListView(
+                    collectionName: 'rooms',
+                    name: "Oda",
+                    docId: widget.docId,
+                  ),
           ],
         ));
   }
